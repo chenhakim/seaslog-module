@@ -1,0 +1,19 @@
+{
+    "name": "module/seaslog-module",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/chenhakim/seaslog-module.git"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9",
+        "module/base": "dev-master"
+    },
+    "autoload": {
+        "psr-0": {
+            "Module\\SeasLog\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
