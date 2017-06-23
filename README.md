@@ -20,7 +20,7 @@ seaslog模块
 添加依赖包。
 
 ```
-composer require chenhakim/seaslog dev-master
+composer require chenhakim/seaslog-module dev-master
 ```
 
 ## 使用
