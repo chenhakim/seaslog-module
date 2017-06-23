@@ -8,7 +8,6 @@ namespace Module\SeasLog;
 
 use Module\SeasLog\core\LogRenderer;
 use Module\SeasLog\core\MessageLogRenderer;
-use Module\SeasLog\core\SeasLog\SeasLog as Log;
 
 // 在入口文件中定义了，这边需要额外判断
 defined('SEASLOG_PATH') or define('SEASLOG_PATH', '/home/www/log/hakim/'); // 项目日志目录
@@ -36,18 +35,18 @@ class SeasLog {
 
     static $nRequestLevel = self::ALL;
 
-    static function getLogger(){
+    static function initLogger(){
         if(self::$logger == null){
-            Log::setBasePath(SEASLOG_PATH);
-            self::setRequestID();
+            \SeasLog::setBasePath(SEASLOG_PATH);
+//            self::setRequestID(); // 该函数不存在，后面可以修改源码加上
             self::setRequestLevel();
-            self::$logger = Log::getLastLogger();
+//            self::$logger = \SeasLog::getLastLogger(); // 该函数也没有意义，无需调用，getLogger() 函数名称也可以改了。initLogger()
         }
-        return self::$logger;
+//        return self::$logger; // 无需返回
     }
     static function setRequestID(){
         self::$strRequestID = isset($_SERVER['HTTP_REQUESTID'])?$_SERVER['HTTP_REQUESTID']:uniqid();
-        Log::setRequestID(self::$strRequestID);
+        \SeasLog::setRequestID(self::$strRequestID);
     }
     static function setRequestLevel(){
         self::$nRequestLevel = isset($_SERVER['HTTP_REQUESTLEVEL'])?(empty($_SERVER['HTTP_REQUESTLEVEL'])?self::ERROR:$_SERVER['HTTP_REQUESTLEVEL']):self::INFO;
@@ -77,25 +76,25 @@ class SeasLog {
         foreach(self::$log as $row){
             switch($row['level']){
                 case self::ALERT:
-                    Log::alert($row['message']);
+                    \SeasLog::alert($row['message']);
                     break;
                 case self::FATAL:
-                    Log::critical($row['message']);
+                    \SeasLog::critical($row['message']);
                     break;
                 case self::ERROR:
-                    Log::error($row['message']);
+                    \SeasLog::error($row['message']);
                     break;
                 case self::WARN:
-                    Log::warning($row['message']);
+                    \SeasLog::warning($row['message']);
                     break;
                 case self::DEBUG:
-                    Log::debug($row['message']);
+                    \SeasLog::debug($row['message']);
                     break;
                 case self::INFO:
-                    Log::info($row['message']);
+                    \SeasLog::info($row['message']);
                     break;
                 case self::TRACE:
-                    Log::debug($row['message']);
+                    \SeasLog::debug($row['message']);
                     break;
                 default:
                     break;
@@ -142,7 +141,7 @@ class SeasLog {
         register_shutdown_function(array('SeasLog','fatalError'));
         set_error_handler(array('SeasLog','appError'));
         set_exception_handler(array('SeasLog','appException'));
-        self::getLogger();
+        self::initLogger();
 
         return ;
     }
