@@ -1,18 +1,24 @@
 {
-    "name": "module/seaslog-module",
+    "name": "chenhakim/seaslog-module",
+    "description": "seaslog扩展日志记录实现",
+    "type": "seaslog-extension",
+    "keywords": ["php","log","seaslog"],
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "chenhakim",
+            "email": "1194842583@qq.com"
+        }
+    ],
     "repositories": [
         {
             "type": "vcs",
             "url": "https://github.com/chenhakim/seaslog-module.git"
         }
     ],
-    "require": {
-        "php": ">=5.5.9",
-        "module/base": "dev-master"
-    },
     "autoload": {
         "psr-0": {
-            "Module\\SeasLog\\": "src/"
+            "chenhakim\\SeasLog\\": "src/"
         }
     },
     "minimum-stability": "stable"

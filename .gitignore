@@ -7,3 +7,5 @@ deployment.properties
 /.settings
 /.buildpath
 /.project
+# phpstorm project files
+.idea
