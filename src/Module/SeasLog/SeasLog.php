@@ -51,7 +51,7 @@ class SeasLog {
     }
     static function setRequestLevel(){
         self::$nRequestLevel = isset($_SERVER['HTTP_REQUESTLEVEL'])?(empty($_SERVER['HTTP_REQUESTLEVEL'])?self::ERROR:$_SERVER['HTTP_REQUESTLEVEL']):self::INFO;
-        //SeasLog::setLevel(self::$strRequestLevel);//由KMLog过滤等级，对后端透明
+        //SeasLog::setLevel(self::$strRequestLevel);//由 SeasLog 过滤等级，对后端透明
     }
 
     /**
@@ -73,8 +73,7 @@ class SeasLog {
         unset($message);
     }
     static private function _saveSeasLog(){
-        //$strFormat = "{type} | {message} | {code}";
-        //SeasLog::info($strFormat ,array('{type}'=>KMLogRenderer->getType(),'{message}'=>KMLogRenderer->getMessage(),'{code}'=>KMLogRenderer->getCode();
+
         foreach(self::$log as $row){
             switch($row['level']){
                 case self::ALERT:
