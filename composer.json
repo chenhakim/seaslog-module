@@ -10,12 +10,6 @@
             "email": "1194842583@qq.com"
         }
     ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/chenhakim/seaslog-module.git"
-        }
-    ],
     "autoload": {
         "psr-0": {
             "Module\\SeasLog\\": "src/"
