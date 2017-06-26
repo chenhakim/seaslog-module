@@ -197,13 +197,15 @@ class SSLog {
         self::record($logLevel ,new MessageLogRenderer($errorStr ,'' ,$errfile ,$errline));
     }
 
-    // 致命错误捕获
+    // 致命错误捕获(错误信息只用于捕捉 E_ERROR，其他忽略 )
     // 该函数在程序执行结束时会调用，结束分为，正常结束、异常结束以及错误结束
     static public function fatalError() {
         if ($e = error_get_last()) {
-            self::record(self::FATAL ,new MessageLogRenderer("[".$e['type']."] ".$e['message'] ,'' ,$e['file'] ,$e['line']));
+            // 只处理 E_ERROR
+            if ( $e['type'] == E_ERROR ) {
+                self::record(self::FATAL ,new MessageLogRenderer("[".$e['type']."] ".$e['message'] ,'' ,$e['file'] ,$e['line']));
+            }
         }
-
         self::save();
         fastcgi_finish_request();
     }
