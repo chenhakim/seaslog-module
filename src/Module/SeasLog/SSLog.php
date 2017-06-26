@@ -15,7 +15,7 @@ if (!function_exists("fastcgi_finish_request")) {
     function fastcgi_finish_request()  {
     }
 }
-class SeasLog {
+class SSLog {
 
     const OFF = 2147483647;
     const ALERT = 60000;
@@ -38,7 +38,7 @@ class SeasLog {
     static function initLogger(){
         if(self::$logger == null){
             \SeasLog::setBasePath(SEASLOG_PATH);
-//            self::setRequestID(); // 该函数不存在，后面可以修改源码加上
+            self::setRequestID(); // 该函数不存在，后面可以修改源码加上
             self::setRequestLevel();
 //            self::$logger = \SeasLog::getLastLogger(); // 该函数也没有意义，无需调用，getLogger() 函数名称也可以改了。initLogger()
         }
@@ -46,7 +46,9 @@ class SeasLog {
     }
     static function setRequestID(){
         self::$strRequestID = isset($_SERVER['HTTP_REQUESTID'])?$_SERVER['HTTP_REQUESTID']:uniqid();
-        \SeasLog::setRequestID(self::$strRequestID);
+        if ( method_exists('SeasLog', 'setRequestID') ) {
+            \SeasLog::setRequestID(self::$strRequestID);
+        }
     }
     static function setRequestLevel(){
         self::$nRequestLevel = isset($_SERVER['HTTP_REQUESTLEVEL'])?(empty($_SERVER['HTTP_REQUESTLEVEL'])?self::ERROR:$_SERVER['HTTP_REQUESTLEVEL']):self::INFO;
@@ -196,12 +198,13 @@ class SeasLog {
     }
 
     // 致命错误捕获
+    // 该函数在程序执行结束时会调用，结束分为，正常结束、异常结束以及错误结束
     static public function fatalError() {
         if ($e = error_get_last()) {
             self::record(self::FATAL ,new MessageLogRenderer("[".$e['type']."] ".$e['message'] ,'' ,$e['file'] ,$e['line']));
         }
 
-        fastcgi_finish_request();
         self::save();
+        fastcgi_finish_request();
     }
 }
